@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import insulease.model.Regiment;
-import insulease.model.Users;
 
 public class RegimentDao {
 protected ConnectionManager connectionManager;
