@@ -32,8 +32,8 @@ public class Regiment {
 	private double LunchRatio;
 	private double DinnerRatio;
 	private double BedTimeRatio;
-	private int BasalId;
-	private int BolusId;
+	private int BasalID;
+	private int BolusID;
 	private int DrID;
 	
 	/*
@@ -53,8 +53,8 @@ public class Regiment {
 		this.LunchRatio=LunchRatio;
 		this.DinnerRatio=DinnerRatio;
 		this.BedTimeRatio=BedTimeRatio;
-		this.BasalId=BasalId;
-		this.BolusId=BolusId;
+		this.BasalID=BasalId;
+		this.BolusID=BolusId;
 		this.DrID=DrID;
 	}
 	
@@ -74,12 +74,13 @@ public class Regiment {
 		this.LunchRatio=LunchRatio;
 		this.DinnerRatio=DinnerRatio;
 		this.BedTimeRatio=BedTimeRatio;
-		this.BasalId=BasalId;
-		this.BolusId=BolusId;
+		this.BasalID=BasalId;
+		this.BolusID=BolusId;
 		this.DrID=DrID;
 	}
 	
 	//Getters
+	public int getRegimentID() {return this.RegimentID;}
 	public String getPtID() {return this.PtID;}
 	public Date getRegimentDate() {return this.RegimentDate;}
 	public double getA1C() {return this.A1C;}
@@ -91,8 +92,8 @@ public class Regiment {
 	public double getLunchRatio() {return this.LunchRatio;}
 	public double getDinnerRatio() {return this.DinnerRatio;}
 	public double getBedtimeRatio() {return this.BedTimeRatio;}
-	public int getBasalId() {return this.BasalId;}
-	public int getBolusId() {return this.BolusId;}
+	public int getBasalID() {return this.BasalID;}
+	public int getBolusID() {return this.BolusID;}
 	public int getDrID() {return this.DrID;}
 	
 	//Setters
@@ -107,9 +108,11 @@ public class Regiment {
 	public void setLunchRatio(double newLunchRatio) {this.LunchRatio = newLunchRatio;}
 	public void setDinnerRatio(double newDinnerRatio) {this.DinnerRatio = newDinnerRatio;}
 	public void setBedtimeRatio(double newBedtimeRatio) {this.BedTimeRatio = newBedtimeRatio;}
-	public void setBasalId(int newBasalId) {this.BasalId = newBasalId;}
-	public void setBolusId(int newBolusId) {this.BolusId = newBolusId;}
+	public void setBasalId(int newBasalId) {this.BasalID = newBasalId;}
+	public void setBolusId(int newBolusId) {this.BolusID = newBolusId;}
 	public void setDrID(int newDrID) {this.DrID = newDrID;}
+
+
 	
 
 }

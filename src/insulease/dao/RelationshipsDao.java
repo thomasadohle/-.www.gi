@@ -5,16 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import insulease.dao.ConnectionManager;
-import insulease.model.Users;
+import insulease.model.Relationships;
+import insulease.model.Relationships.RelType;
 
-public class UsersDao {
-	
+public class RelationshipsDao {
 	protected ConnectionManager connectionManager;
 	
 	// Singleton pattern: prevents database objects from being manipulated by multiple people simultaneously
 		private static UsersDao instance = null;
-		protected UsersDao() {
+		protected RelationshipsDao() {
 			connectionManager = new ConnectionManager();
 		}
 		
@@ -27,20 +26,20 @@ public class UsersDao {
 		
 		
 		/**
-		 *INSERT INTO Users
+		 *INSERT INTO Relationships
 		 */
-		public Users create(Users user) throws SQLException {
-			String insertUser = "INSERT INTO Users(UserName,Password,ContactInfoId) VALUES(?,?,?);";
+		public Relationships create(Relationships relationship) throws SQLException {
+			String insertRelationship = "INSERT INTO Relationships(RelUserName, RelPtID, rel) VALUES(?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertUser);
-				insertStmt.setString(1, user.getUserName());
-				insertStmt.setString(2, user.getUserPassword());
-				insertStmt.setInt(3, user.getContactInfoId());
+				insertStmt = connection.prepareStatement(insertRelationship);
+				insertStmt.setString(1, relationship.getRelUserName());
+				insertStmt.setString(2, relationship.getRelPtID());
+				insertStmt.setString(3, relationship.relToString());
 				insertStmt.executeUpdate();
-				return user;
+				return relationship;
 			} catch (SQLException e) {
 				e.printStackTrace();
 				throw e;
@@ -55,16 +54,16 @@ public class UsersDao {
 		}
 		
 		/**
-		 * DELETE FROM Users
+		 * DELETE FROM Relationships
 		 */
-		public Users delete(Users user) throws SQLException {
-			String deleteUser = "DELETE FROM Users WHERE UserName=?;";
+		public Relationships delete(Relationships relationship) throws SQLException {
+			String deleteRelationship = "DELETE FROM Relationships WHERE RelID=?;";
 			Connection connection = null;
 			PreparedStatement deleteStmt = null;
 			try {
 				connection = connectionManager.getConnection();
-				deleteStmt = connection.prepareStatement(deleteUser);
-				deleteStmt.setString(1, user.getUserName());
+				deleteStmt = connection.prepareStatement(deleteRelationship);
+				deleteStmt.setInt(1, relationship.getRelID());
 				deleteStmt.executeUpdate();
 
 				// Return null so the caller can no longer operate on the Persons instance.
@@ -84,29 +83,26 @@ public class UsersDao {
 		
 		
 		/**
-		 * SELECT FROM Users WHERE UserName=
+		 * SELECT FROM Relationships WHERE RelID=
 		 */
-		public Users getUserFromUserName(String userName) throws SQLException {
-			String selectUser = "SELECT * FROM Users WHERE UserName=?;";
+		public Relationships getRelationshipsFromRelID(int RelID) throws SQLException {
+			String selectRelationship = "SELECT * FROM Relationships WHERE RelID=?;";
 			Connection connection = null;
 			PreparedStatement selectStmt = null;
 			ResultSet results = null;
 			try {
 				connection = connectionManager.getConnection();
-				selectStmt = connection.prepareStatement(selectUser);
-				selectStmt.setString(1, userName);
-				// Note that we call executeQuery(). This is used for a SELECT statement
-				// because it returns a result set. For more information, see:
-				// http://docs.oracle.com/javase/7/docs/api/java/sql/PreparedStatement.html
-				// http://docs.oracle.com/javase/7/docs/api/java/sql/ResultSet.html
+				selectStmt = connection.prepareStatement(selectRelationship);
+				selectStmt.setInt(1, RelID);
 				results = selectStmt.executeQuery();
 				//Iterate through result set and make a new User object
 				if(results.next()) {
-					String resultUserName = results.getString("UserName");
-					String resultPassword = results.getString("Password");
-					int resultContactInfoId = results.getInt("ContactInfoId");
-					Users user = new Users(resultUserName,resultPassword,resultContactInfoId);
-					return user;
+					int resultRelID = results.getInt("RelID");
+					String resultRelUserName = results.getString("RelUserName");
+					String resultRelPtID = results.getString("RelPtID");
+					RelType resultRelType = Relationships.createType(results.getString("RelType"));
+					Relationships relationship = new Relationships (resultRelID,resultRelUserName, resultRelPtID, resultRelType);
+					return relationship;
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -124,6 +120,5 @@ public class UsersDao {
 			}
 			return null;
 		}
-
 
 }
