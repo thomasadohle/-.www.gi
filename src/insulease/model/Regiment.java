@@ -2,23 +2,7 @@ package insulease.model;
 
 import java.sql.Date;
 
-/*
- * RegimentID INT AUTO_INCREMENT,
-    PtID VARCHAR(255),
-    RegimentDate DATE,
-    A1C DECIMAL(3,1),
-    DaytimeTarget SMALLINT,
-    NighttimeTarget SMALLINT,
-    DaytimeCorrection SMALLINT,
-    NighttimeCorrection SMALLINT,
-    BreakfastRatio DECIMAL (4,1),
-    LunchRatio DECIMAL (4,1),
-    DinnerRatio DECIMAL (4,1),
-    BedTimeRatio DECIMAL (4,1),
-    BasalId INT,
-    BolusId INT,
-    DrID INT,
- */
+
 public class Regiment {
 	private int RegimentID;
 	private String PtID;

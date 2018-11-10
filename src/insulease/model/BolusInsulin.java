@@ -1,11 +1,6 @@
 package insulease.model;
 
-/*
- * 	BolusID INT AUTO_INCREMENT,
-    Brand VARCHAR(255),
-    BolusType ENUM ('syringe','pen','pump'),
-    PtID VARCHAR(255),
- */
+
 public class BolusInsulin {
 	private int BolusID;
 	private String Brand;
@@ -37,5 +32,26 @@ public class BolusInsulin {
 	public String getBrand() {return this.Brand;}
 	public BolusType getBolusType() {return this.bolusType;}
 	public String getPtID() {return this.PtID;}
+	
+	/*
+	 * Convert BolusType to a String
+	 */
+	public String BolusTypeToString() {
+		if (this.bolusType.equals(bolusType.pen)) {return "pen";}
+		else if (this.bolusType.equals(bolusType.pump)) {return "pump";}
+		else if (this.bolusType.equals(bolusType.syringe)) {return "syringe";}
+		else {throw new IllegalArgumentException ("Bolus type is invalid");}
+	}
+	
+	/*
+	 * Convert a String to a BolusType
+	 */
+	public static BolusType StringToBolusType(String str) {
+		String type = str.toUpperCase();
+		if (type.equals("PEN")) {return BolusType.pen;}
+		else if (type.equals("PUMP")) {return BolusType.pump;}
+		else if (type.equals("SYRINGE")) {return BolusType.syringe;}
+		else {throw new IllegalArgumentException ("BolusType not recognized");}
+	}
 
 }

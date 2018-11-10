@@ -14,6 +14,11 @@ public class Drs {
 		this.AffiliatedInstitution=AffiliatedInstitution;
 	}
 	
+	public Drs (int ContactInfoID, String AffiliatedInstitution) {
+		this.ContactInfoID = ContactInfoID;
+		this.AffiliatedInstitution=AffiliatedInstitution;
+	}
+	
 	//Getters 
 	public int getDrID() {return this.DrID;}
 	public int getContactInfoID() {return this.ContactInfoID;}

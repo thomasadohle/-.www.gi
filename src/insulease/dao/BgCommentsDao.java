@@ -1,44 +1,45 @@
 package insulease.dao;
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import insulease.model.Drs;
+import insulease.model.BasalInsulin;
+import insulease.model.BgComments;
 
-public class DrsDao {
+public class BgCommentsDao {
+	
 protected ConnectionManager connectionManager;
 	
 	// Singleton pattern: prevents database objects from being manipulated by multiple people simultaneously
-		private static DrsDao instance = null;
-		protected DrsDao() {
+		private static BgCommentsDao instance = null;
+		protected BgCommentsDao() {
 			connectionManager = new ConnectionManager();
 		}
 		
-		public static DrsDao getInstance() {
+		public static BgCommentsDao getInstance() {
 			if(instance == null) {
-				instance = new DrsDao();
+				instance = new BgCommentsDao();
 			}
 			return instance;
 		}
 		
-		
 		/**
-		 *INSERT INTO Drs
+		 *INSERT INTO BgComments 
 		 */
-		public Drs create(Drs dr) throws SQLException {
-			String insertDr = "INSERT INTO Drs(ContactInfoId,AffiliatedInstitution) VALUES(?,?);";
+		public BgComments create(BgComments bgComment) throws SQLException {
+			String insertBgComments = "INSERT INTO BgComments(PtID, CommentText, BgID) VALUES(?,?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertDr);
-				insertStmt.setInt(1, dr.getContactInfoID());
-				insertStmt.setString(2, dr.getAffiliatedInstitutionD());
+				insertStmt = connection.prepareStatement(insertBgComments);
+				insertStmt.setString(1, bgComment.getPtID());
+				insertStmt.setString(2, bgComment.getCommentText());
+				insertStmt.setInt(3, bgComment.getBgID());
 				insertStmt.executeUpdate();
-				return dr;
+				return bgComment;
 			} catch (SQLException e) {
 				e.printStackTrace();
 				throw e;
@@ -52,20 +53,18 @@ protected ConnectionManager connectionManager;
 			}
 		}
 		
-		
 		/**
-		 * DELETE FROM DrsDao
+		 * DELETE FROM BgComments
 		 */
-		public Drs delete(Drs dr) throws SQLException {
-			String deleteDr = "DELETE FROM Doctors WHERE DrID=?;";
+		public BgComments delete(BgComments bgComment) throws SQLException {
+			String deleteBasalInsulin = "DELETE FROM BgComments WHERE BgCommentID=?;";
 			Connection connection = null;
 			PreparedStatement deleteStmt = null;
 			try {
 				connection = connectionManager.getConnection();
-				deleteStmt = connection.prepareStatement(deleteDr);
-				deleteStmt.setInt(1, dr.getDrID());
+				deleteStmt = connection.prepareStatement(deleteBasalInsulin);
+				deleteStmt.setInt(1, bgComment.getBgID());
 				deleteStmt.executeUpdate();
-
 				// Return null so the caller can no longer operate on the Persons instance.
 				return null;
 			} catch (SQLException e) {
@@ -82,24 +81,25 @@ protected ConnectionManager connectionManager;
 		}
 		
 		/**
-		 * SELECT FROM Drs WHERE DrID=
+		 * SELECT FROM BgComments WHERE BgCommentID=
 		 */
-		public Drs getDrFromDrID(int DrID) throws SQLException {
-			String selectUser = "SELECT * FROM Drs WHERE DrID=?;";
+		public BgComments getBgCommentFromBgCommentId(int bgCommentID) throws SQLException {
+			String selectBgComment = "SELECT * FROM BgComments WHERE BgCommentID=?;";
 			Connection connection = null;
 			PreparedStatement selectStmt = null;
 			ResultSet results = null;
 			try {
 				connection = connectionManager.getConnection();
-				selectStmt = connection.prepareStatement(selectUser);
-				selectStmt.setInt(1, DrID);
+				selectStmt = connection.prepareStatement(selectBgComment);
+				selectStmt.setInt(1, bgCommentID);
 				results = selectStmt.executeQuery();
 				if(results.next()) {
-					int rDrID = results.getInt("DrID");
-					int rContactInfoID = results.getInt("ContactInfoID");
-					String rAffiliated = results.getString("AffiliatedInstitution");
-					Drs dr = new Drs(rDrID, rContactInfoID, rAffiliated);
-					return dr;
+					int rBgCommentID = results.getInt("BgCommentID");
+					String rPtID = results.getString("PatientID");
+					String rCommentText = results.getString("CommentText");
+					int rBgID = results.getInt("BgID");
+					BgComments bgComment  = new BgComments(rBgCommentID,rPtID,rCommentText,rBgID );
+					return bgComment;
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -117,4 +117,5 @@ protected ConnectionManager connectionManager;
 			}
 			return null;
 		}
+
 }

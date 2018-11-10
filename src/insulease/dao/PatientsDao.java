@@ -27,14 +27,15 @@ protected ConnectionManager connectionManager;
 		 *INSERT INTO Patients
 		 */
 		public Patients create(Patients patient) throws SQLException {
-			String insertPatient = "INSERT INTO Patients(MasterUserID, PtContactInfoID) VALUES(?,?);";
+			String insertPatient = "INSERT INTO Patients(PtID, MasterUserID, PtContactInfoID) VALUES(?,?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
 			try {
 				connection = connectionManager.getConnection();
 				insertStmt = connection.prepareStatement(insertPatient);
-				insertStmt.setString(1, patient.getMasterUserID());
-				insertStmt.setInt(2, patient.getPtContactInfoID());
+				insertStmt.setString(1, patient.getPtID());
+				insertStmt.setString(2, patient.getMasterUserID());
+				insertStmt.setInt(3, patient.getPtContactInfoID());
 				insertStmt.executeUpdate();
 				return patient;
 			} catch (SQLException e) {
@@ -60,7 +61,7 @@ protected ConnectionManager connectionManager;
 			try {
 				connection = connectionManager.getConnection();
 				deleteStmt = connection.prepareStatement(deletePatient);
-				deleteStmt.setInt(1, patient.getPtID());
+				deleteStmt.setString(1, patient.getPtID());
 				deleteStmt.executeUpdate();
 
 				// Return null so the caller can no longer operate on the Persons instance.
@@ -92,7 +93,7 @@ protected ConnectionManager connectionManager;
 				selectStmt.setInt(1, PtId);
 				results = selectStmt.executeQuery();
 				if(results.next()) {
-					int rPtID = results.getInt("PtID");
+					String rPtID = results.getString("PtID");
 					String rMasterUserId = results.getString("MasterUserID");
 					int rContactInfoID = results.getInt("PtContactInfoID");
 					Patients patient = new Patients(rPtID, rMasterUserId, rContactInfoID);

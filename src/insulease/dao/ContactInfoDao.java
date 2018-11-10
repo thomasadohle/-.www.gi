@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import insulease.model.ContactInfo;
-import insulease.model.Regiment;
 
 public class ContactInfoDao {
 	protected ConnectionManager connectionManager;

@@ -6,39 +6,43 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import insulease.model.Drs;
+import insulease.model.BasalInsulin;
+import insulease.model.BolusInsulin;
+import insulease.model.Regiment;
+import insulease.model.BolusInsulin.BolusType;
 
-public class DrsDao {
+public class BasalInsulinDao {
+	
 protected ConnectionManager connectionManager;
 	
 	// Singleton pattern: prevents database objects from being manipulated by multiple people simultaneously
-		private static DrsDao instance = null;
-		protected DrsDao() {
+		private static BasalInsulinDao instance = null;
+		protected BasalInsulinDao() {
 			connectionManager = new ConnectionManager();
 		}
 		
-		public static DrsDao getInstance() {
+		public static BasalInsulinDao getInstance() {
 			if(instance == null) {
-				instance = new DrsDao();
+				instance = new BasalInsulinDao();
 			}
 			return instance;
 		}
 		
-		
 		/**
-		 *INSERT INTO Drs
+		 *INSERT INTO BasalInsulin
 		 */
-		public Drs create(Drs dr) throws SQLException {
-			String insertDr = "INSERT INTO Drs(ContactInfoId,AffiliatedInstitution) VALUES(?,?);";
+		public BasalInsulin create(BasalInsulin basalInsulin) throws SQLException {
+			String insertBasalInsulin = "INSERT INTO BasalInsulin(Brand, Frequency, PtID) VALUES(?,?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertDr);
-				insertStmt.setInt(1, dr.getContactInfoID());
-				insertStmt.setString(2, dr.getAffiliatedInstitutionD());
+				insertStmt = connection.prepareStatement(insertBasalInsulin);
+				insertStmt.setString(1, basalInsulin.getBrand());
+				insertStmt.setInt(2, basalInsulin.getFrequency());
+				insertStmt.setString(3, basalInsulin.getPtID());
 				insertStmt.executeUpdate();
-				return dr;
+				return basalInsulin;
 			} catch (SQLException e) {
 				e.printStackTrace();
 				throw e;
@@ -52,18 +56,17 @@ protected ConnectionManager connectionManager;
 			}
 		}
 		
-		
 		/**
-		 * DELETE FROM DrsDao
+		 * DELETE FROM BasalInsulin
 		 */
-		public Drs delete(Drs dr) throws SQLException {
-			String deleteDr = "DELETE FROM Doctors WHERE DrID=?;";
+		public BasalInsulin delete(BasalInsulin basalInsulin) throws SQLException {
+			String deleteBasalInsulin = "DELETE FROM BasalInsulin WHERE BasalID=?;";
 			Connection connection = null;
 			PreparedStatement deleteStmt = null;
 			try {
 				connection = connectionManager.getConnection();
-				deleteStmt = connection.prepareStatement(deleteDr);
-				deleteStmt.setInt(1, dr.getDrID());
+				deleteStmt = connection.prepareStatement(deleteBasalInsulin);
+				deleteStmt.setInt(1, basalInsulin.getBasalID());
 				deleteStmt.executeUpdate();
 
 				// Return null so the caller can no longer operate on the Persons instance.
@@ -82,24 +85,24 @@ protected ConnectionManager connectionManager;
 		}
 		
 		/**
-		 * SELECT FROM Drs WHERE DrID=
+		 * SELECT FROM BasalInsulin WHERE BasalID=
 		 */
-		public Drs getDrFromDrID(int DrID) throws SQLException {
-			String selectUser = "SELECT * FROM Drs WHERE DrID=?;";
+		public BasalInsulin getBasalInsulinFromBasalID(int basalID) throws SQLException {
+			String selectBasal = "SELECT * FROM BasalInsulin WHERE BasalID=?;";
 			Connection connection = null;
 			PreparedStatement selectStmt = null;
 			ResultSet results = null;
 			try {
 				connection = connectionManager.getConnection();
-				selectStmt = connection.prepareStatement(selectUser);
-				selectStmt.setInt(1, DrID);
+				selectStmt = connection.prepareStatement(selectBasal);
+				selectStmt.setInt(1, basalID);
 				results = selectStmt.executeQuery();
 				if(results.next()) {
-					int rDrID = results.getInt("DrID");
-					int rContactInfoID = results.getInt("ContactInfoID");
-					String rAffiliated = results.getString("AffiliatedInstitution");
-					Drs dr = new Drs(rDrID, rContactInfoID, rAffiliated);
-					return dr;
+					int rBasalID = results.getInt("BasalID");
+					String rBrand = results.getString("Brand");
+					String rPtID = results.getString("PtID");
+					int rFrequency = results.getInt("Frequency");
+					BasalInsulin basal  = new BasalInsulin(rBasalID, rBrand, rFrequency, rPtID);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -117,4 +120,5 @@ protected ConnectionManager connectionManager;
 			}
 			return null;
 		}
+
 }

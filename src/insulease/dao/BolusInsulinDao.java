@@ -6,39 +6,42 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import insulease.model.Drs;
+import insulease.model.BolusInsulin;
+import insulease.model.BolusInsulin.BolusType;
+import insulease.model.Regiment;
 
-public class DrsDao {
+public class BolusInsulinDao {
 protected ConnectionManager connectionManager;
 	
 	// Singleton pattern: prevents database objects from being manipulated by multiple people simultaneously
-		private static DrsDao instance = null;
-		protected DrsDao() {
+		private static BolusInsulinDao instance = null;
+		protected BolusInsulinDao() {
 			connectionManager = new ConnectionManager();
 		}
 		
-		public static DrsDao getInstance() {
+		public static BolusInsulinDao getInstance() {
 			if(instance == null) {
-				instance = new DrsDao();
+				instance = new BolusInsulinDao();
 			}
 			return instance;
 		}
 		
 		
 		/**
-		 *INSERT INTO Drs
+		 *INSERT INTO BolusInsulin
 		 */
-		public Drs create(Drs dr) throws SQLException {
-			String insertDr = "INSERT INTO Drs(ContactInfoId,AffiliatedInstitution) VALUES(?,?);";
+		public BolusInsulin create(BolusInsulin bolusInsulin) throws SQLException {
+			String insertBolusInsulin = "INSERT INTO BolusInsulin(Brand, BolusType, PtID) VALUES(?,?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertDr);
-				insertStmt.setInt(1, dr.getContactInfoID());
-				insertStmt.setString(2, dr.getAffiliatedInstitutionD());
+				insertStmt = connection.prepareStatement(insertBolusInsulin);
+				insertStmt.setString(1, bolusInsulin.getBrand());
+				insertStmt.setString(2, bolusInsulin.BolusTypeToString());
+				insertStmt.setString(3, bolusInsulin.getPtID());
 				insertStmt.executeUpdate();
-				return dr;
+				return bolusInsulin;
 			} catch (SQLException e) {
 				e.printStackTrace();
 				throw e;
@@ -52,18 +55,17 @@ protected ConnectionManager connectionManager;
 			}
 		}
 		
-		
 		/**
-		 * DELETE FROM DrsDao
+		 * DELETE FROM BolusInsulin
 		 */
-		public Drs delete(Drs dr) throws SQLException {
-			String deleteDr = "DELETE FROM Doctors WHERE DrID=?;";
+		public BolusInsulin delete(BolusInsulin bolusInsulin) throws SQLException {
+			String deleteBolusInsulin = "DELETE FROM BolusInsulin WHERE BolusID=?;";
 			Connection connection = null;
 			PreparedStatement deleteStmt = null;
 			try {
 				connection = connectionManager.getConnection();
-				deleteStmt = connection.prepareStatement(deleteDr);
-				deleteStmt.setInt(1, dr.getDrID());
+				deleteStmt = connection.prepareStatement(deleteBolusInsulin);
+				deleteStmt.setInt(1, bolusInsulin.getBolusID());
 				deleteStmt.executeUpdate();
 
 				// Return null so the caller can no longer operate on the Persons instance.
@@ -82,24 +84,24 @@ protected ConnectionManager connectionManager;
 		}
 		
 		/**
-		 * SELECT FROM Drs WHERE DrID=
+		 * SELECT FROM BolusInsulin WHERE BolusID=
 		 */
-		public Drs getDrFromDrID(int DrID) throws SQLException {
-			String selectUser = "SELECT * FROM Drs WHERE DrID=?;";
+		public Regiment getRegimentFromRegimentID(int bolusID) throws SQLException {
+			String selectBolus = "SELECT * FROM BolusInsulin WHERE BolusID=?;";
 			Connection connection = null;
 			PreparedStatement selectStmt = null;
 			ResultSet results = null;
 			try {
 				connection = connectionManager.getConnection();
-				selectStmt = connection.prepareStatement(selectUser);
-				selectStmt.setInt(1, DrID);
+				selectStmt = connection.prepareStatement(selectBolus);
+				selectStmt.setInt(1, bolusID);
 				results = selectStmt.executeQuery();
 				if(results.next()) {
-					int rDrID = results.getInt("DrID");
-					int rContactInfoID = results.getInt("ContactInfoID");
-					String rAffiliated = results.getString("AffiliatedInstitution");
-					Drs dr = new Drs(rDrID, rContactInfoID, rAffiliated);
-					return dr;
+					int rBolusID = results.getInt("BolusID");
+					String rBrand = results.getString("Brand");
+					BolusType rBolusType = BolusInsulin.StringToBolusType(results.getString("BolusType"));
+					String rPtID = results.getString("PtID");
+					BolusInsulin bolus  = new BolusInsulin(rBolusID, rBrand, rBolusType, rPtID);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -117,4 +119,6 @@ protected ConnectionManager connectionManager;
 			}
 			return null;
 		}
+	
+
 }

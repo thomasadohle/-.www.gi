@@ -19,6 +19,12 @@ public class Relationships {
 		this.rel=rel;
 	}
 	
+	public Relationships (String RelUserName, String RelPtID, RelType rel) {
+		this.RelUserName=RelUserName;
+		this.RelPtID=RelPtID;
+		this.rel=rel;
+	}
+	
 	//Getters
 	public int getRelID() {return this.RelID;}
 	public String getRelUserName() {return this.RelUserName;}

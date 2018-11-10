@@ -57,6 +57,7 @@ public class ContactInfo {
 	}
 	
 	//Getters
+	public int getContactInfoID() {return this.ContactInfoId;}
 	public String getFirstName() {return this.FirstName;}
 	public String getLastName() {return this.LastName;}
 	public Date getDOB() {return this.DOB;}
@@ -67,6 +68,7 @@ public class ContactInfo {
 	public int getZipCode() {return this.ZipCode;}
 	public String getEmail() {return this.Email;}
 	public String getGender() {return this.Gender;}
+	public String getContactImage() {return this.ContactImage;}
 	
 	//Need Getter for ContactImage
 	
@@ -78,6 +80,7 @@ public class ContactInfo {
 	public void setZipCode(int newZipCode) {this.ZipCode=newZipCode;}
 	public void setEmail(String newEmail) {this.Email=newEmail;}
 	public void setGender(String newGender) {this.Gender=newGender;}
+
 	
 	//Need Setter for ContactImage
 	

@@ -30,7 +30,7 @@ public class UsersDao {
 		 *INSERT INTO Users
 		 */
 		public Users create(Users user) throws SQLException {
-			String insertUser = "INSERT INTO Users(UserName,Password,ContactInfoId) VALUES(?,?,?);";
+			String insertUser = "INSERT INTO Users(UserName,UserPassword,ContactInfoId) VALUES(?,?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
 			try {
@@ -103,7 +103,7 @@ public class UsersDao {
 				//Iterate through result set and make a new User object
 				if(results.next()) {
 					String resultUserName = results.getString("UserName");
-					String resultPassword = results.getString("Password");
+					String resultPassword = results.getString("UserPassword");
 					int resultContactInfoId = results.getInt("ContactInfoId");
 					Users user = new Users(resultUserName,resultPassword,resultContactInfoId);
 					return user;

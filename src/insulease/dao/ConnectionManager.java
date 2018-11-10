@@ -13,7 +13,7 @@ public class ConnectionManager {
 		// Port to your database server. By default, this is 3307.
 		private final int port= 3306;
 		// Name of the MySQL schema that contains your tables.
-		private final String schema = "ReviewApplication";
+		private final String schema = "Insulease";
 
 		/** Get the connection to the database instance. */
 		public Connection getConnection() throws SQLException {

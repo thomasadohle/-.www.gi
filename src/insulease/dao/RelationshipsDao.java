@@ -12,14 +12,14 @@ public class RelationshipsDao {
 	protected ConnectionManager connectionManager;
 	
 	// Singleton pattern: prevents database objects from being manipulated by multiple people simultaneously
-		private static UsersDao instance = null;
+		private static RelationshipsDao instance = null;
 		protected RelationshipsDao() {
 			connectionManager = new ConnectionManager();
 		}
 		
-		public static UsersDao getInstance() {
+		public static RelationshipsDao getInstance() {
 			if(instance == null) {
-				instance = new UsersDao();
+				instance = new RelationshipsDao();
 			}
 			return instance;
 		}
@@ -29,7 +29,7 @@ public class RelationshipsDao {
 		 *INSERT INTO Relationships
 		 */
 		public Relationships create(Relationships relationship) throws SQLException {
-			String insertRelationship = "INSERT INTO Relationships(RelUserName, RelPtID, rel) VALUES(?,?);";
+			String insertRelationship = "INSERT INTO Relationships(RelUserName, RelPtID, RelType) VALUES(?,?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
 			try {
