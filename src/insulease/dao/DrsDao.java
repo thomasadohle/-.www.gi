@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import insulease.model.ContactInfo;
 import insulease.model.Drs;
 
 public class DrsDao {
@@ -32,12 +33,21 @@ protected ConnectionManager connectionManager;
 			String insertDr = "INSERT INTO Drs(ContactInfoId,AffiliatedInstitution) VALUES(?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
+			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
 				insertStmt = connection.prepareStatement(insertDr);
-				insertStmt.setInt(1, dr.getContactInfoID());
+				insertStmt.setInt(1, dr.getContactInfo().getContactInfoID());
 				insertStmt.setString(2, dr.getAffiliatedInstitutionD());
 				insertStmt.executeUpdate();
+				resultKey = insertStmt.getGeneratedKeys();
+				int contactInfoId = -1;
+				if(resultKey.next()) {
+					contactInfoId = resultKey.getInt(1);
+				} else {
+					throw new SQLException("Unable to retrieve auto-generated key.");
+				}
+				dr.setDrID(contactInfoId);
 				return dr;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -89,16 +99,20 @@ protected ConnectionManager connectionManager;
 			Connection connection = null;
 			PreparedStatement selectStmt = null;
 			ResultSet results = null;
+			ResultSet resultKey = null;
+
 			try {
 				connection = connectionManager.getConnection();
 				selectStmt = connection.prepareStatement(selectUser);
 				selectStmt.setInt(1, DrID);
 				results = selectStmt.executeQuery();
+				ContactInfoDao contactInfoDao = ContactInfoDao.getInstance();
 				if(results.next()) {
 					int rDrID = results.getInt("DrID");
 					int rContactInfoID = results.getInt("ContactInfoID");
 					String rAffiliated = results.getString("AffiliatedInstitution");
-					Drs dr = new Drs(rDrID, rContactInfoID, rAffiliated);
+					ContactInfo contactInfo = contactInfoDao.getContactInfoFromContactInfoID(rContactInfoID);
+					Drs dr = new Drs(rDrID, contactInfo, rAffiliated);
 					return dr;
 				}
 			} catch (SQLException e) {

@@ -4,18 +4,18 @@ package insulease.model;
 public class Patients {
 	
 	private String PtID;
-	private String MasterUserID;
-	private int PtContactInfoID;
+	private Users MasterUser;
+	private ContactInfo PtContactInfo;
 	
-	public Patients (String PtID, String MasterUserID, int PtContactInfoID) {
+	public Patients (String PtID, Users MasterUser, ContactInfo PtContactInfo) {
 		this.PtID=PtID;
-		this.MasterUserID=MasterUserID;
-		this.PtContactInfoID=PtContactInfoID;
+		this.MasterUser=MasterUser;
+		this.PtContactInfo=PtContactInfo;
 	}
 	
 	
 	public String getPtID() {return this.PtID;}
-	public String getMasterUserID() {return this.MasterUserID;}
-	public int getPtContactInfoID() {return this.PtContactInfoID;}
+	public Users getMasterUser() {return this.MasterUser;}
+	public ContactInfo getPtContactInfo() {return this.PtContactInfo;}
 
 }

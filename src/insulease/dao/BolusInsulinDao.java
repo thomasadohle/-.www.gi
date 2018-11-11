@@ -31,16 +31,24 @@ protected ConnectionManager connectionManager;
 		 *INSERT INTO BolusInsulin
 		 */
 		public BolusInsulin create(BolusInsulin bolusInsulin) throws SQLException {
-			String insertBolusInsulin = "INSERT INTO BolusInsulin(Brand, BolusType, PtID) VALUES(?,?,?);";
+			String insertBolusInsulin = "INSERT INTO BolusInsulin(Brand, BolusType) VALUES(?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
+			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
 				insertStmt = connection.prepareStatement(insertBolusInsulin);
 				insertStmt.setString(1, bolusInsulin.getBrand());
 				insertStmt.setString(2, bolusInsulin.BolusTypeToString());
-				insertStmt.setString(3, bolusInsulin.getPtID());
 				insertStmt.executeUpdate();
+				resultKey = insertStmt.getGeneratedKeys();
+				int bolusID = -1;
+				if(resultKey.next()) {
+					bolusID = resultKey.getInt(1);
+				} else {
+					throw new SQLException("Unable to retrieve auto-generated key.");
+				}
+				bolusInsulin.setBolusID(bolusID);
 				return bolusInsulin;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -86,7 +94,7 @@ protected ConnectionManager connectionManager;
 		/**
 		 * SELECT FROM BolusInsulin WHERE BolusID=
 		 */
-		public Regiment getRegimentFromRegimentID(int bolusID) throws SQLException {
+		public BolusInsulin getBolusInsulinFromBolusID(int bolusID) throws SQLException {
 			String selectBolus = "SELECT * FROM BolusInsulin WHERE BolusID=?;";
 			Connection connection = null;
 			PreparedStatement selectStmt = null;
@@ -100,8 +108,9 @@ protected ConnectionManager connectionManager;
 					int rBolusID = results.getInt("BolusID");
 					String rBrand = results.getString("Brand");
 					BolusType rBolusType = BolusInsulin.StringToBolusType(results.getString("BolusType"));
-					String rPtID = results.getString("PtID");
-					BolusInsulin bolus  = new BolusInsulin(rBolusID, rBrand, rBolusType, rPtID);
+					BolusInsulin bolus  = new BolusInsulin(rBolusID, rBrand, rBolusType);
+					return bolus;
+					
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

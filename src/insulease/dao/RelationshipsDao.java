@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import insulease.model.Patients;
 import insulease.model.Relationships;
 import insulease.model.Relationships.RelType;
+import insulease.model.Users;
 
 public class RelationshipsDao {
 	protected ConnectionManager connectionManager;
@@ -32,13 +34,22 @@ public class RelationshipsDao {
 			String insertRelationship = "INSERT INTO Relationships(RelUserName, RelPtID, RelType) VALUES(?,?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
+			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
 				insertStmt = connection.prepareStatement(insertRelationship);
-				insertStmt.setString(1, relationship.getRelUserName());
-				insertStmt.setString(2, relationship.getRelPtID());
+				insertStmt.setString(1, relationship.getRelUser().getUserName());
+				insertStmt.setString(2, relationship.getRelPt().getPtID());
 				insertStmt.setString(3, relationship.relToString());
 				insertStmt.executeUpdate();
+				resultKey = insertStmt.getGeneratedKeys();
+				int relationshipID = -1;
+				if(resultKey.next()) {
+					relationshipID = resultKey.getInt(1);
+				} else {
+					throw new SQLException("Unable to retrieve auto-generated key.");
+				}
+				relationship.setRelID(relationshipID);
 				return relationship;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -96,12 +107,17 @@ public class RelationshipsDao {
 				selectStmt.setInt(1, RelID);
 				results = selectStmt.executeQuery();
 				//Iterate through result set and make a new User object
+				UsersDao usersDao = UsersDao.getInstance();
+				PatientsDao patientsDao = PatientsDao.getInstance();
 				if(results.next()) {
 					int resultRelID = results.getInt("RelID");
 					String resultRelUserName = results.getString("RelUserName");
 					String resultRelPtID = results.getString("RelPtID");
 					RelType resultRelType = Relationships.createType(results.getString("RelType"));
-					Relationships relationship = new Relationships (resultRelID,resultRelUserName, resultRelPtID, resultRelType);
+					Users user = usersDao.getUserFromUserName(resultRelUserName);
+					Patients patient = patientsDao.getPatientFromPtID(resultRelPtID);
+					
+					Relationships relationship = new Relationships (resultRelID, user, patient, resultRelType);
 					return relationship;
 				}
 			} catch (SQLException e) {

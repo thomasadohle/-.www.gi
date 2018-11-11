@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import insulease.dao.ConnectionManager;
+import insulease.model.ContactInfo;
 import insulease.model.Users;
 
 public class UsersDao {
@@ -38,7 +39,7 @@ public class UsersDao {
 				insertStmt = connection.prepareStatement(insertUser);
 				insertStmt.setString(1, user.getUserName());
 				insertStmt.setString(2, user.getUserPassword());
-				insertStmt.setInt(3, user.getContactInfoId());
+				insertStmt.setInt(3, user.getContactInfo().getContactInfoID());
 				insertStmt.executeUpdate();
 				return user;
 			} catch (SQLException e) {
@@ -101,11 +102,15 @@ public class UsersDao {
 				// http://docs.oracle.com/javase/7/docs/api/java/sql/ResultSet.html
 				results = selectStmt.executeQuery();
 				//Iterate through result set and make a new User object
+				ContactInfoDao contactInfoDao = ContactInfoDao.getInstance();
+				UsersDao usersDao = UsersDao.getInstance();
 				if(results.next()) {
 					String resultUserName = results.getString("UserName");
 					String resultPassword = results.getString("UserPassword");
-					int resultContactInfoId = results.getInt("ContactInfoId");
-					Users user = new Users(resultUserName,resultPassword,resultContactInfoId);
+					int contactInfoID = results.getInt("ContactInfoID");
+					ContactInfo resultContactInfo = contactInfoDao.getContactInfoFromContactInfoID(contactInfoID);
+					
+					Users user = new Users(resultUserName,resultPassword,resultContactInfo);
 					return user;
 				}
 			} catch (SQLException e) {

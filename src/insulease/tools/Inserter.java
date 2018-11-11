@@ -2,9 +2,11 @@ package insulease.tools;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
 
 import insulease.dao.BasalInsulinDao;
 import insulease.dao.BgCommentsDao;
+import insulease.dao.BloodGlucosesDao;
 import insulease.dao.BolusInsulinDao;
 import insulease.dao.ContactInfoDao;
 import insulease.dao.DoseCommentsDao;
@@ -15,6 +17,7 @@ import insulease.dao.RelationshipsDao;
 import insulease.dao.UsersDao;
 import insulease.model.BasalInsulin;
 import insulease.model.BgComments;
+import insulease.model.BloodGlucoses;
 import insulease.model.BolusInsulin;
 import insulease.model.BolusInsulin.BolusType;
 import insulease.model.ContactInfo;
@@ -30,23 +33,32 @@ public class Inserter {
 	public static void main (String[] args) throws SQLException {
 		
 		//Create Daos
-		BasalInsulinDao DaoBasalInsulin = BasalInsulinDao.getInstance();
-		BgCommentsDao DaoBgComments = BgCommentsDao.getInstance();
-		BolusInsulinDao DaoBolusInsulin = BolusInsulinDao.getInstance();
+		//BasalInsulinDao DaoBasalInsulin = BasalInsulinDao.getInstance();
+		//BgCommentsDao DaoBgComments = BgCommentsDao.getInstance();
+		//BolusInsulinDao DaoBolusInsulin = BolusInsulinDao.getInstance();
 		ContactInfoDao DaoContactInfo = ContactInfoDao.getInstance();
-		DoseCommentsDao DaoDoseComments = DoseCommentsDao.getInstance();
-		DrsDao DaoDrs = DrsDao.getInstance();
-		PatientsDao DaoPatients = PatientsDao.getInstance();
-		RegimentDao DaoRegiment = RegimentDao.getInstance();
-		RelationshipsDao DaoRelationships = RelationshipsDao.getInstance();
-		UsersDao DaoUsers = UsersDao.getInstance();
-		
-		
-		//Create DOBs
-		Date date1 = new Date(2018-10-01);
+		//DoseCommentsDao DaoDoseComments = DoseCommentsDao.getInstance();
+		//DrsDao DaoDrs = DrsDao.getInstance();
+		//PatientsDao DaoPatients = PatientsDao.getInstance();
+		//RegimentDao DaoRegiment = RegimentDao.getInstance();
+		//RelationshipsDao DaoRelationships = RelationshipsDao.getInstance();
+		//UsersDao DaoUsers = UsersDao.getInstance();
+		//BloodGlucosesDao DaoBloodGlucoses = BloodGlucosesDao.getInstance();
 		
 		
 		//Create Dates
+		Date date1 = new Date(2018-10-01);
+		Date date2 = new Date(2018-10-02);
+		Date date3 = new Date(2018-10-02);
+		
+		//Create Times
+		Time breakfast = new Time(07-31-00);
+		Time lunch = new Time(12-15-00);
+		Time dinner = new Time(19-05-00);
+		
+		
+		
+		//Create DOBs
 		Date dob1 = new Date(2009-06-01);
 		Date dob2 = new Date(1988-02-11);
 		Date dob3 = new Date(1960-01-21);
@@ -67,6 +79,9 @@ public class Inserter {
 		DaoContactInfo.create(contact5);
 		DaoContactInfo.create(contact6);
 		
+		System.out.println(contact3.getContactInfoID());
+		
+		/*
 		//Update Contact Info
 		
 		
@@ -130,34 +145,50 @@ public class Inserter {
 		//Upload BasalInsulin
 		DaoBasalInsulin.create(basal);
 		
+		//Update basalInsulin
+		DaoBasalInsulin.updateContent(basal, "new");
+		
 		
 		//Create Regiment Objects
 		Regiment regiment1 = new Regiment("tdohle",date1,12.2,130,150,2,2,1.5,1.5,1.5,1.5,1,1,1);
 		
-		//Upload BasalInsulin 
-		//DaoRegiment.create(regiment1); 
+		//Upload Regiment 
+		DaoRegiment.create(regiment1); 
+		
+		//Update Regiment
+		DaoRegiment.updateRegiment(regiment1, "A1C", 8.1);
+		DaoRegiment.updateRegiment(regiment1, "DaytimeTarget", -5);
+		
 		
 		
 		//Create Blood Glucoses Objects
-		
+		BloodGlucoses bg1 = new BloodGlucoses(date1,breakfast,"tdohle",150);
+		BloodGlucoses bg2 = new BloodGlucoses(date2,lunch,"tdohle",160);
+		BloodGlucoses bg3 = new BloodGlucoses(date3,dinner,"tdohle",179);
 		
 		//Upload Blood Glucoses
-		
+		DaoBloodGlucoses.create(bg1);
+		DaoBloodGlucoses.create(bg2);
+		DaoBloodGlucoses.create(bg3);
 		
 		
 		//Create BgComments Objects
+		BgComments bgComment1 = new BgComments("tdohle","not great",1);
+		BgComments bgComment2 = new BgComments("tdohle","better",2);
 		
 		//Upload BgComments
+		DaoBgComments.create(bgComment1);
+		DaoBgComments.create(bgComment2);
 		
 		
-		//Create InsulinDoses objecets
+		//Create InsulinDoses objects
 		
 		//Upload InsulinDoses
 		
 		
 		//Create DoseComments objects
 		
-		//Upload DoseComments
+		//Upload DoseComments */
 	}
 
 }

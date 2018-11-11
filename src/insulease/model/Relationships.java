@@ -4,32 +4,35 @@ package insulease.model;
 
 public class Relationships {
 	private int RelID;
-	private String RelUserName;
-	private String RelPtID;
+	private Users RelUser;
+	private Patients RelPt;
 	public enum RelType{admin, provider, caregiver}
 	private RelType rel;
 	
 	/*
 	 * Constructor
 	 */
-	public Relationships (int RelID, String RelUserName, String RelPtID, RelType rel) {
+	public Relationships (int RelID, Users RelUser, Patients RelPt, RelType rel) {
 		this.RelID=RelID;
-		this.RelUserName=RelUserName;
-		this.RelPtID=RelPtID;
+		this.RelUser=RelUser;
+		this.RelPt=RelPt;
 		this.rel=rel;
 	}
 	
-	public Relationships (String RelUserName, String RelPtID, RelType rel) {
-		this.RelUserName=RelUserName;
-		this.RelPtID=RelPtID;
+	public Relationships (Users RelUser, Patients RelPt, RelType rel) {
+		this.RelUser=RelUser;
+		this.RelPt=RelPt;
 		this.rel=rel;
 	}
 	
 	//Getters
 	public int getRelID() {return this.RelID;}
-	public String getRelUserName() {return this.RelUserName;}
-	public String getRelPtID() {return this.RelPtID;}
+	public Users getRelUser() {return this.RelUser;}
+	public Patients getRelPt() {return this.RelPt;}
 	public RelType getRel() {return this.rel;}
+	
+	//Setters
+	public void setRelID(int relID) {this.RelID=relID;}
 	
 	/*
 	 * Method to convert the enum RelType to the corresponding String

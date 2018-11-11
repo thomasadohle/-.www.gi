@@ -8,36 +8,33 @@ package insulease.model;
  */
 public class BgComments {
 	private int BgCommentID;
-	private String PtID;
 	private String CommentText;
-	private int BgID;
+	private BloodGlucoses Bg;
 	
 	/*
 	 * Constructor using auto-generated BgCommentId
 	 */
-	public BgComments (int BgCommentID, String PtID, String CommentText, int BgID) {
+	public BgComments (int BgCommentID, String CommentText, BloodGlucoses bg) {
 		this.BgCommentID=BgCommentID;
-		this.PtID=PtID;
 		this.CommentText=CommentText;
-		this.BgID=BgID;
+		this.Bg=bg;
 	}
 	
 	/*
 	 * Constructor not using auto-generated BgCommentId
 	 */
-	public BgComments (String PtID, String CommentText, int BgID) {
-		this.PtID=PtID;
+	public BgComments (String PtID, String CommentText, BloodGlucoses bg) {
 		this.CommentText=CommentText;
-		this.BgID=BgID;
+		this.Bg=bg;
 	}
 	
 	//Getters
 	public int getBgCommentID() {return this.BgCommentID;}
-	public String getPtID() {return this.PtID;}
 	public String getCommentText() {return this.CommentText;}
-	public int getBgID() {return this.BgID;}
+	public BloodGlucoses getBg() {return this.Bg;}
 	
 	//Setters
 	public void setCommentText(String newCommentText) { this.CommentText = newCommentText;}
+	public void setBgCommentID(int bgCommentID) {this.BgCommentID = bgCommentID;}
 
 }

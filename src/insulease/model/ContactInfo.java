@@ -73,6 +73,7 @@ public class ContactInfo {
 	//Need Getter for ContactImage
 	
 	//Setters
+	public void setContactInfoID (int contactInfoID) {this.ContactInfoId=contactInfoID;}
 	public void setStreet1(String newStreet1) {this.Street1=newStreet1;}
 	public void setStreet2(String newStreet2) {this.Street2=newStreet2;}
 	public void setCity(String newCity) {this.City=newCity;} 

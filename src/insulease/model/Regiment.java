@@ -5,7 +5,7 @@ import java.sql.Date;
 
 public class Regiment {
 	private int RegimentID;
-	private String PtID;
+	private Patients pt;
 	private Date RegimentDate;
 	private double A1C;
 	private int DaytimeTarget;
@@ -16,17 +16,17 @@ public class Regiment {
 	private double LunchRatio;
 	private double DinnerRatio;
 	private double BedTimeRatio;
-	private int BasalID;
-	private int BolusID;
-	private int DrID;
+	private BasalInsulin basalInsulin;
+	private BolusInsulin bolusInsulin;
+	private Drs dr;
 	
 	/*
 	 * Constructor using auto-generated RegimentID
 	 */
-	public Regiment(int RegimentID, String PtID, Date RegimentDate, double A1C, int DaytimeTarget, int NighttimeTarget, int DaytimeCorrection,
-			int NighttimeCorrection, double BreakfastRatio, double LunchRatio, double DinnerRatio, double BedTimeRatio, int BasalId, int BolusId, int DrID) {
+	public Regiment(int RegimentID, Patients pt, Date RegimentDate, double A1C, int DaytimeTarget, int NighttimeTarget, int DaytimeCorrection,
+			int NighttimeCorrection, double BreakfastRatio, double LunchRatio, double DinnerRatio, double BedTimeRatio, BasalInsulin basal, BolusInsulin bolus, Drs dr) {
 		this.RegimentID=RegimentID;
-		this.PtID=PtID;
+		this.pt=pt;
 		this.RegimentDate=RegimentDate;
 		this.A1C=A1C;
 		this.DaytimeTarget=DaytimeTarget;
@@ -37,17 +37,18 @@ public class Regiment {
 		this.LunchRatio=LunchRatio;
 		this.DinnerRatio=DinnerRatio;
 		this.BedTimeRatio=BedTimeRatio;
-		this.BasalID=BasalId;
-		this.BolusID=BolusId;
-		this.DrID=DrID;
+		this.basalInsulin=basal;
+		this.bolusInsulin=bolus;
+		this.dr=dr;
 	}
 	
 	/*
 	 * Constructor not using auto-generated RegimentID
 	 */
-	public Regiment(String PtID, Date RegimentDate, double A1C, int DaytimeTarget, int NighttimeTarget, int DaytimeCorrection,
-			int NighttimeCorrection, double BreakfastRatio, double LunchRatio, double DinnerRatio, double BedTimeRatio, int BasalId, int BolusId, int DrID) {
-		this.PtID=PtID;
+	public Regiment(Patients pt, Date RegimentDate, double A1C, int DaytimeTarget, int NighttimeTarget, int DaytimeCorrection,
+			int NighttimeCorrection, double BreakfastRatio, double LunchRatio, double DinnerRatio, double BedTimeRatio, BasalInsulin basal, 
+			BolusInsulin bolus, Drs dr) {
+		this.pt=pt;
 		this.RegimentDate=RegimentDate;
 		this.A1C=A1C;
 		this.DaytimeTarget=DaytimeTarget;
@@ -58,14 +59,14 @@ public class Regiment {
 		this.LunchRatio=LunchRatio;
 		this.DinnerRatio=DinnerRatio;
 		this.BedTimeRatio=BedTimeRatio;
-		this.BasalID=BasalId;
-		this.BolusID=BolusId;
-		this.DrID=DrID;
+		this.basalInsulin=basal;
+		this.bolusInsulin=bolus;
+		this.dr=dr;
 	}
 	
 	//Getters
 	public int getRegimentID() {return this.RegimentID;}
-	public String getPtID() {return this.PtID;}
+	public Patients getPt() {return this.pt;}
 	public Date getRegimentDate() {return this.RegimentDate;}
 	public double getA1C() {return this.A1C;}
 	public int getDayTimeTarget() {return this.DaytimeTarget;}
@@ -76,12 +77,13 @@ public class Regiment {
 	public double getLunchRatio() {return this.LunchRatio;}
 	public double getDinnerRatio() {return this.DinnerRatio;}
 	public double getBedtimeRatio() {return this.BedTimeRatio;}
-	public int getBasalID() {return this.BasalID;}
-	public int getBolusID() {return this.BolusID;}
-	public int getDrID() {return this.DrID;}
+	public BasalInsulin getBasal() {return this.basalInsulin;}
+	public BolusInsulin getBolus() {return this.bolusInsulin;}
+	public Drs getDr() {return this.dr;}
 	
 	//Setters
-	public void setPtID(String newPtID) {this.PtID = newPtID;}
+	public void setRegimentID (int regimentID) {this.RegimentID=regimentID;}
+	public void setPt(Patients newPt) {this.pt = newPt;}
 	public void setRegimentDate(Date newRegimentDate) {this.RegimentDate = newRegimentDate;}
 	public void setA1C(double newA1C) {this.A1C = newA1C;}
 	public void setDayTimeTarget(int newDayTimeTarget) {this.DaytimeTarget = newDayTimeTarget;}
@@ -92,9 +94,9 @@ public class Regiment {
 	public void setLunchRatio(double newLunchRatio) {this.LunchRatio = newLunchRatio;}
 	public void setDinnerRatio(double newDinnerRatio) {this.DinnerRatio = newDinnerRatio;}
 	public void setBedtimeRatio(double newBedtimeRatio) {this.BedTimeRatio = newBedtimeRatio;}
-	public void setBasalId(int newBasalId) {this.BasalID = newBasalId;}
-	public void setBolusId(int newBolusId) {this.BolusID = newBolusId;}
-	public void setDrID(int newDrID) {this.DrID = newDrID;}
+	public void setBasal(BasalInsulin newBasal) {this.basalInsulin = newBasal;}
+	public void setBolus(BolusInsulin newBolus) {this.bolusInsulin = newBolus;}
+	public void setDrID(Drs newDr) {this.dr = newDr;}
 
 
 	

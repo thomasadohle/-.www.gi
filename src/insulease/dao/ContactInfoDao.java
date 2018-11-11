@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import insulease.model.ContactInfo;
 
@@ -35,9 +36,10 @@ public class ContactInfoDao {
 					+ "Street2, City, State, ZipCode, Email, Gender, ContactImage) VALUES(?,?,?,?,?,?,?,?,?,?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
+			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertContactInfo);
+				insertStmt = connection.prepareStatement(insertContactInfo, Statement.RETURN_GENERATED_KEYS);
 				insertStmt.setString(1, contactInfo.getFirstName());
 				insertStmt.setString(2, contactInfo.getLastName());
 				insertStmt.setDate(3, contactInfo.getDOB());
@@ -50,6 +52,14 @@ public class ContactInfoDao {
 				insertStmt.setString(10, contactInfo.getGender());
 				insertStmt.setString(11,contactInfo.getContactImage());
 				insertStmt.executeUpdate();
+				resultKey = insertStmt.getGeneratedKeys();
+				int contactInfoId = -1;
+				if(resultKey.next()) {
+					contactInfoId = resultKey.getInt(1);
+				} else {
+					throw new SQLException("Unable to retrieve auto-generated key.");
+				}
+				contactInfo.setContactInfoID(contactInfoId);
 				return contactInfo;
 			} catch (SQLException e) {
 				e.printStackTrace();

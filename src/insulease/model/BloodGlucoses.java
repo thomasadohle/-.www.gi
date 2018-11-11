@@ -8,28 +8,28 @@ public class BloodGlucoses {
 	private int BgID;
 	private Date BgDate;
 	private Time BgTime;
-	private String PtID;
+	private Patients Pt;
 	private int BloodGlucose;
 	
 	
 	/*
 	 * Constructor with auto-generated BgID
 	 */
-	public BloodGlucoses(int BgID, Date BgDate, Time BgTime, String PtID, int BloodGlucose) {
+	public BloodGlucoses(int BgID, Date BgDate, Time BgTime, Patients Pt, int BloodGlucose) {
 		this.BgID=BgID;
 		this.BgDate=BgDate;
 		this.BgTime=BgTime;
-		this.PtID=PtID;
+		this.Pt=Pt;
 		this.BloodGlucose=BloodGlucose;
 	}
 	
 	/*
 	 * Constructor without auto-generated BgID
 	 */
-	public BloodGlucoses(Date BgDate, Time BgTime, String PtID, int BloodGlucose) {
+	public BloodGlucoses(Date BgDate, Time BgTime, Patients pt, int BloodGlucose) {
 		this.BgDate=BgDate;
 		this.BgTime=BgTime;
-		this.PtID=PtID;
+		this.Pt=pt;
 		this.BloodGlucose=BloodGlucose;
 	}
 	
@@ -37,10 +37,11 @@ public class BloodGlucoses {
 	public int getBgID() {return this.BgID;}
 	public Date getBgDate() {return this.BgDate;}
 	public Time getBgTime() {return this.BgTime;}
-	public String getPtID() {return this.PtID;}
+	public Patients getPt() {return this.Pt;}
 	public int getBloodGlucose() {return this.BloodGlucose;}
 	
 	//Setters
+	public void setBgID(int bgID) {this.BgID=bgID;}
 	public void setBgDate(Date newBgDate) {this.BgDate = newBgDate;}
 	public void setBgTime(Time newBgTime) {this.BgTime = newBgTime;}
 	public void setBloodGlucose(int newBloodGlucose) {this.BloodGlucose = newBloodGlucose;}

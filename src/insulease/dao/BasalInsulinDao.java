@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import insulease.model.BasalInsulin;
 import insulease.model.BolusInsulin;
@@ -35,13 +36,21 @@ protected ConnectionManager connectionManager;
 			String insertBasalInsulin = "INSERT INTO BasalInsulin(Brand, Frequency, PtID) VALUES(?,?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
+			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
 				insertStmt = connection.prepareStatement(insertBasalInsulin);
 				insertStmt.setString(1, basalInsulin.getBrand());
 				insertStmt.setInt(2, basalInsulin.getFrequency());
-				insertStmt.setString(3, basalInsulin.getPtID());
 				insertStmt.executeUpdate();
+				resultKey = insertStmt.getGeneratedKeys();
+				int basalID = -1;
+				if(resultKey.next()) {
+					basalID = resultKey.getInt(1);
+				} else {
+					throw new SQLException("Unable to retrieve auto-generated key.");
+				}
+				basalInsulin.setBasalID(basalID);
 				return basalInsulin;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -100,9 +109,8 @@ protected ConnectionManager connectionManager;
 				if(results.next()) {
 					int rBasalID = results.getInt("BasalID");
 					String rBrand = results.getString("Brand");
-					String rPtID = results.getString("PtID");
 					int rFrequency = results.getInt("Frequency");
-					BasalInsulin basal  = new BasalInsulin(rBasalID, rBrand, rFrequency, rPtID);
+					BasalInsulin basal  = new BasalInsulin(rBasalID, rBrand, rFrequency);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -119,6 +127,32 @@ protected ConnectionManager connectionManager;
 				}
 			}
 			return null;
+		}
+		public BasalInsulin updateContent(BasalInsulin basalInsulin, String newBrand) throws SQLException {
+			String updateContent= "UPDATE BasalInsulin SET Brand=? WHERE BasalID=?;";
+			Connection connection = null;
+			PreparedStatement updateStmt = null;
+			try {
+				connection = connectionManager.getConnection();
+				updateStmt = connection.prepareStatement(updateContent);
+				updateStmt.setString(1, newBrand);
+				updateStmt.setInt(2, basalInsulin.getBasalID());
+				updateStmt.executeUpdate();
+
+				// Update the blogPost param before returning to the caller.
+				basalInsulin.setBrand(newBrand);
+				return basalInsulin;
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			} finally {
+				if(connection != null) {
+					connection.close();
+				}
+				if(updateStmt != null) {
+					updateStmt.close();
+				}
+			}
 		}
 
 }

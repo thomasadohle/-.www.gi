@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 import insulease.model.BasalInsulin;
 import insulease.model.BgComments;
+import insulease.model.BloodGlucoses;
+import insulease.model.Patients;
 
 public class BgCommentsDao {
 	
@@ -29,16 +31,24 @@ protected ConnectionManager connectionManager;
 		 *INSERT INTO BgComments 
 		 */
 		public BgComments create(BgComments bgComment) throws SQLException {
-			String insertBgComments = "INSERT INTO BgComments(PtID, CommentText, BgID) VALUES(?,?,?);";
+			String insertBgComments = "INSERT INTO BgComments(CommentText, BgID) VALUES(?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
+			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
 				insertStmt = connection.prepareStatement(insertBgComments);
-				insertStmt.setString(1, bgComment.getPtID());
-				insertStmt.setString(2, bgComment.getCommentText());
-				insertStmt.setInt(3, bgComment.getBgID());
+				insertStmt.setString(1, bgComment.getCommentText());
+				insertStmt.setInt(2, bgComment.getBg().getBgID());
 				insertStmt.executeUpdate();
+				resultKey = insertStmt.getGeneratedKeys();
+				int bgCommentsID = -1;
+				if(resultKey.next()) {
+					bgCommentsID = resultKey.getInt(1);
+				} else {
+					throw new SQLException("Unable to retrieve auto-generated key.");
+				}
+				bgComment.setBgCommentID(bgCommentsID);;
 				return bgComment;
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -63,7 +73,7 @@ protected ConnectionManager connectionManager;
 			try {
 				connection = connectionManager.getConnection();
 				deleteStmt = connection.prepareStatement(deleteBasalInsulin);
-				deleteStmt.setInt(1, bgComment.getBgID());
+				deleteStmt.setInt(1, bgComment.getBg().getBgID());
 				deleteStmt.executeUpdate();
 				// Return null so the caller can no longer operate on the Persons instance.
 				return null;
@@ -93,12 +103,14 @@ protected ConnectionManager connectionManager;
 				selectStmt = connection.prepareStatement(selectBgComment);
 				selectStmt.setInt(1, bgCommentID);
 				results = selectStmt.executeQuery();
+				BloodGlucosesDao bloodGlucosesDao = BloodGlucosesDao.getInstance();
 				if(results.next()) {
 					int rBgCommentID = results.getInt("BgCommentID");
-					String rPtID = results.getString("PatientID");
 					String rCommentText = results.getString("CommentText");
 					int rBgID = results.getInt("BgID");
-					BgComments bgComment  = new BgComments(rBgCommentID,rPtID,rCommentText,rBgID );
+					String rPtID = results.getString("PtID");
+					BloodGlucoses bg = bloodGlucosesDao.getBgFromBgId(rBgID);
+					BgComments bgComment  = new BgComments(rBgCommentID,rCommentText,bg );
 					return bgComment;
 				}
 			} catch (SQLException e) {

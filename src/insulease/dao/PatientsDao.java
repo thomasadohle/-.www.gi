@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import insulease.model.ContactInfo;
 import insulease.model.Patients;
+import insulease.model.Users;
 
 public class PatientsDao {
 protected ConnectionManager connectionManager;
@@ -34,8 +36,8 @@ protected ConnectionManager connectionManager;
 				connection = connectionManager.getConnection();
 				insertStmt = connection.prepareStatement(insertPatient);
 				insertStmt.setString(1, patient.getPtID());
-				insertStmt.setString(2, patient.getMasterUserID());
-				insertStmt.setInt(3, patient.getPtContactInfoID());
+				insertStmt.setString(2, patient.getMasterUser().getUserName());
+				insertStmt.setInt(3, patient.getPtContactInfo().getContactInfoID());
 				insertStmt.executeUpdate();
 				return patient;
 			} catch (SQLException e) {
@@ -82,7 +84,7 @@ protected ConnectionManager connectionManager;
 		/**
 		 * SELECT FROM Patients WHERE PtID=
 		 */
-		public Patients getPatientFromPtID(int PtId) throws SQLException {
+		public Patients getPatientFromPtID(String PtId) throws SQLException {
 			String selectPatient = "SELECT * FROM Patients WHERE PtID=?;";
 			Connection connection = null;
 			PreparedStatement selectStmt = null;
@@ -90,13 +92,17 @@ protected ConnectionManager connectionManager;
 			try {
 				connection = connectionManager.getConnection();
 				selectStmt = connection.prepareStatement(selectPatient);
-				selectStmt.setInt(1, PtId);
+				selectStmt.setString(1, PtId);
 				results = selectStmt.executeQuery();
+				UsersDao usersDao = UsersDao.getInstance();
+				ContactInfoDao contactInfoDao = ContactInfoDao.getInstance();
 				if(results.next()) {
 					String rPtID = results.getString("PtID");
 					String rMasterUserId = results.getString("MasterUserID");
 					int rContactInfoID = results.getInt("PtContactInfoID");
-					Patients patient = new Patients(rPtID, rMasterUserId, rContactInfoID);
+					Users masterUser = usersDao.getUserFromUserName(rMasterUserId);
+					ContactInfo contactInfo = contactInfoDao.getContactInfoFromContactInfoID(rContactInfoID);
+					Patients patient = new Patients(rPtID, masterUser, contactInfo);
 					return patient;
 				}
 			} catch (SQLException e) {
