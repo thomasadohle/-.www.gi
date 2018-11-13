@@ -1,5 +1,8 @@
 package insulease.model;
 
+import java.sql.SQLException;
+
+import insulease.dao.RegimentDao;
 
 public class Patients {
 	
@@ -17,5 +20,13 @@ public class Patients {
 	public String getPtID() {return this.PtID;}
 	public Users getMasterUser() {return this.MasterUser;}
 	public ContactInfo getPtContactInfo() {return this.PtContactInfo;}
+	public Regiment getRegiment() throws SQLException {
+		RegimentDao regimentDao = RegimentDao.getInstance();
+		Regiment  regiment = regimentDao.getRegimentFromPatient(this.PtID);
+		return regiment;
+	}
+	
+	@Override
+	public String toString() {return "got a patient";}
 
 }

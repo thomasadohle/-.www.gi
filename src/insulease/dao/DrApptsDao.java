@@ -40,8 +40,8 @@ protected ConnectionManager connectionManager;
 			try {
 				connection = connectionManager.getConnection();
 				insertStmt = connection.prepareStatement(insertDrAppts);
-				insertStmt.setDate(1, drAppt.getApptDate());
-				insertStmt.setTime(2, drAppt.getApptTime());
+				insertStmt.setString(1, drAppt.getApptDate());
+				insertStmt.setString(2, drAppt.getApptTime());
 				insertStmt.setString(3, drAppt.getPt().getPtID());
 				insertStmt.setInt(4, drAppt.getDr().getDrID());
 				insertStmt.executeUpdate();
@@ -112,8 +112,8 @@ protected ConnectionManager connectionManager;
 				PatientsDao patientsDao = PatientsDao.getInstance();
 				if(results.next()) {
 					int rApptID = results.getInt("ApptID");
-					Date rDate = results.getDate("ApptDate");
-					Time rTime = results.getTime("ApptTime");
+					String rDate = results.getString("ApptDate");
+					String rTime = results.getString("ApptTime");
 					String rPtID = results.getString("PtID");
 					int rDrID = results.getInt("DrID");
 					Drs dr = drsDao.getDrFromDrID(rDrID);

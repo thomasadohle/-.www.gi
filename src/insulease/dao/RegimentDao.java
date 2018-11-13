@@ -43,7 +43,7 @@ protected ConnectionManager connectionManager;
 				connection = connectionManager.getConnection();
 				insertStmt = connection.prepareStatement(insertRegiment);
 				insertStmt.setString(1, regiment.getPt().getPtID());
-				insertStmt.setDate(2, regiment.getRegimentDate());
+				insertStmt.setString(2, regiment.getRegimentDate());
 				insertStmt.setDouble(3, regiment.getA1C());
 				insertStmt.setInt(4, regiment.getDayTimeTarget());
 				insertStmt.setInt(5, regiment.getNighttimeTarget());
@@ -112,7 +112,7 @@ protected ConnectionManager connectionManager;
 		 * SELECT FROM Users WHERE UserName=
 		 */
 		public Regiment getRegimentFromRegimentID(int regimentid) throws SQLException {
-			String selectUser = "SELECT * FROM Users WHERE RegimentID=?;";
+			String selectUser = "SELECT * FROM Regiment WHERE RegimentID=?;";
 			Connection connection = null;
 			PreparedStatement selectStmt = null;
 			ResultSet results = null;
@@ -128,7 +128,67 @@ protected ConnectionManager connectionManager;
 				if(results.next()) {
 					int rRegimentId = results.getInt("RegimentID");
 					String rPatientId = results.getString("PtID");
-					Date rRegimentDate = results.getDate("RegimentDate");
+					String rRegimentDate = results.getString("RegimentDate");
+					double rA1C = results.getDouble("A1C");
+					int rDaytimeTarget = results.getInt("DayTimeTarget");
+					int rNighttimeTarget = results.getInt("NighttimeTarget");
+					int rDaytimeCorrection = results.getInt("DaytimeCorrection");
+					int rNighttimeCorrection = results.getInt("NighttimeCorrection");
+					double rBreakfastRatio = results.getDouble("BreakfastRatio:");
+					double rLunchRatio = results.getDouble("LunchRatio");
+					double rDinnerRatio = results.getDouble("DinnerRatio");
+					double rBedtimeRatio = results.getDouble("BedtimeRatio");
+					int rBasalId = results.getInt("BasalID");
+					int rBolusId = results.getInt("BolusID");
+					int rDrId = results.getInt("DrID");
+					Patients pt = patientsDao.getPatientFromPtID(rPatientId);
+					BasalInsulin basal = basalDao.getBasalInsulinFromBasalID(rBasalId);
+					BolusInsulin bolus = bolusDao.getBolusInsulinFromBolusID(rBolusId);
+					Drs dr = drsDao.getDrFromDrID(rDrId);
+					
+					Regiment regiment = new Regiment(rRegimentId, pt, rRegimentDate, rA1C, rDaytimeTarget, 
+							rNighttimeTarget, rDaytimeCorrection, rNighttimeCorrection, rBreakfastRatio, 
+							rLunchRatio, rDinnerRatio, rBedtimeRatio, basal, bolus, dr);
+					return regiment;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			} finally {
+				if(connection != null) {
+					connection.close();
+				}
+				if(selectStmt != null) {
+					selectStmt.close();
+				}
+				if(results != null) {
+					results.close();
+				}
+			}
+			return null;
+		}
+		
+		/**
+		 * SELECT FROM Regiment WHERE PtID=
+		 */
+		public Regiment getRegimentFromPatient(String patientID) throws SQLException {
+			String selectUser = "SELECT * FROM Regiment WHERE PtID=?;";
+			Connection connection = null;
+			PreparedStatement selectStmt = null;
+			ResultSet results = null;
+			try {
+				connection = connectionManager.getConnection();
+				selectStmt = connection.prepareStatement(selectUser);
+				selectStmt.setString(1, patientID);
+				results = selectStmt.executeQuery();
+				BasalInsulinDao basalDao = BasalInsulinDao.getInstance();
+				BolusInsulinDao bolusDao = BolusInsulinDao.getInstance();
+				DrsDao drsDao = DrsDao.getInstance();
+				PatientsDao patientsDao = PatientsDao.getInstance();
+				if(results.next()) {
+					int rRegimentId = results.getInt("RegimentID");
+					String rPatientId = results.getString("PtID");
+					String rRegimentDate = results.getString("RegimentDate");
 					double rA1C = results.getDouble("A1C");
 					int rDaytimeTarget = results.getInt("DayTimeTarget");
 					int rNighttimeTarget = results.getInt("NighttimeTarget");

@@ -6,15 +6,15 @@ import java.sql.Time;
 
 public class DrAppts {
 	private int ApptID;
-	private Date ApptDate;
-	private Time ApptTime;
+	private String ApptDate;
+	private String ApptTime;
 	private Patients Pt;
 	private Drs Dr;
 	
 	/*
 	 * Constructor with auto-generated ApptID
 	 */
-	public DrAppts(int ApptID, Date ApptDate, Time ApptTime, Patients Pt, Drs Dr) {
+	public DrAppts(int ApptID, String ApptDate, String ApptTime, Patients Pt, Drs Dr) {
 		this.ApptID=ApptID;
 		this.ApptDate=ApptDate;
 		this.ApptTime=ApptTime;
@@ -25,7 +25,7 @@ public class DrAppts {
 	/*
 	 * Constructor without auto-generated ApptID
 	 */
-	public DrAppts(Date ApptDate, Time ApptTime, Patients Pt, Drs Dr) {
+	public DrAppts(String ApptDate, String ApptTime, Patients Pt, Drs Dr) {
 		this.ApptDate=ApptDate;
 		this.ApptTime=ApptTime;
 		this.Pt=Pt;
@@ -35,8 +35,8 @@ public class DrAppts {
 	
 	//Getters
 	public int getApptID() {return this.ApptID;}
-	public Date getApptDate() {return this.ApptDate;}
-	public Time getApptTime() {return this.ApptTime;}
+	public String getApptDate() {return this.ApptDate;}
+	public String getApptTime() {return this.ApptTime;}
 	public Patients getPt() {return this.Pt;}
 	public Drs getDr() {return this.Dr;}
 	

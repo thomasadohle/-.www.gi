@@ -6,8 +6,8 @@ import java.sql.Time;
 
 public class BloodGlucoses {
 	private int BgID;
-	private Date BgDate;
-	private Time BgTime;
+	private String BgDate;
+	private String BgTime;
 	private Patients Pt;
 	private int BloodGlucose;
 	
@@ -15,7 +15,7 @@ public class BloodGlucoses {
 	/*
 	 * Constructor with auto-generated BgID
 	 */
-	public BloodGlucoses(int BgID, Date BgDate, Time BgTime, Patients Pt, int BloodGlucose) {
+	public BloodGlucoses(int BgID, String BgDate, String BgTime, Patients Pt, int BloodGlucose) {
 		this.BgID=BgID;
 		this.BgDate=BgDate;
 		this.BgTime=BgTime;
@@ -26,7 +26,7 @@ public class BloodGlucoses {
 	/*
 	 * Constructor without auto-generated BgID
 	 */
-	public BloodGlucoses(Date BgDate, Time BgTime, Patients pt, int BloodGlucose) {
+	public BloodGlucoses(String BgDate, String BgTime, Patients pt, int BloodGlucose) {
 		this.BgDate=BgDate;
 		this.BgTime=BgTime;
 		this.Pt=pt;
@@ -35,14 +35,14 @@ public class BloodGlucoses {
 	
 	//Getters
 	public int getBgID() {return this.BgID;}
-	public Date getBgDate() {return this.BgDate;}
-	public Time getBgTime() {return this.BgTime;}
+	public String getBgDate() {return this.BgDate;}
+	public String getBgTime() {return this.BgTime;}
 	public Patients getPt() {return this.Pt;}
 	public int getBloodGlucose() {return this.BloodGlucose;}
 	
 	//Setters
 	public void setBgID(int bgID) {this.BgID=bgID;}
-	public void setBgDate(Date newBgDate) {this.BgDate = newBgDate;}
-	public void setBgTime(Time newBgTime) {this.BgTime = newBgTime;}
+	public void setBgDate(String newBgDate) {this.BgDate = newBgDate;}
+	public void setBgTime(String newBgTime) {this.BgTime = newBgTime;}
 	public void setBloodGlucose(int newBloodGlucose) {this.BloodGlucose = newBloodGlucose;}
 }

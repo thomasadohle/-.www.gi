@@ -7,8 +7,8 @@ import java.sql.Time;
 public class InsulinDoses {
 	private int DoseID;
 	private Patients Pt;
-	private Date DoseDate;
-	private Time DoseTime;
+	private String DoseDate;
+	private String DoseTime;
 	public enum DoseType{breakfast, morning_snack, lunch, afternoon_snack, dinner, bedtime_snack, overnight}
 	private DoseType doseType;
 	private int CarbCount;
@@ -19,7 +19,7 @@ public class InsulinDoses {
 	/*
 	 * Constructor using auto-generated DoseID
 	 */
-	public InsulinDoses (int DoseID, Patients pt, Date DoseDate, Time DoseTime, DoseType doseType, int CarbCount,
+	public InsulinDoses (int DoseID, Patients pt, String DoseDate, String DoseTime, DoseType doseType, int CarbCount,
 			BloodGlucoses bg, double CalculatedDose, double ActualDose) {
 		this.DoseID=DoseID;
 		this.Pt=pt;
@@ -35,7 +35,7 @@ public class InsulinDoses {
 	/*
 	 * Constructor not using auto-generated DoseID
 	 */
-	public InsulinDoses (Patients pt, Date DoseDate, Time DoseTime, DoseType doseType, int CarbCount,
+	public InsulinDoses (Patients pt, String DoseDate, String DoseTime, DoseType doseType, int CarbCount,
 			BloodGlucoses bg, double CalculatedDose, double ActualDose) {
 		this.Pt=pt;
 		this.DoseDate=DoseDate;
@@ -50,8 +50,8 @@ public class InsulinDoses {
 	//Getters
 	public int getDoseID() {return this.DoseID;}
 	public Patients getPt() {return this.Pt;}
-	public Date getDoseDate() {return this.DoseDate;}
-	public Time getDoseTime() {return this.DoseTime;}
+	public String getDoseDate() {return this.DoseDate;}
+	public String getDoseTime() {return this.DoseTime;}
 	public DoseType getDoseType() {return this.doseType;}
 	public int getCarbCount() {return this.CarbCount;}
 	public BloodGlucoses getBg() {return this.Bg;}
@@ -60,8 +60,8 @@ public class InsulinDoses {
 	
 	//Setters
 	public void setIDoseID (int doseID) {this.DoseID=doseID;}
-	public void setDoseDate(Date newDoseDate) { this.DoseDate = newDoseDate;}
-	public void setDoseTime(Time newDoseTime) { this.DoseTime = newDoseTime;}
+	public void setDoseDate(String newDoseDate) { this.DoseDate = newDoseDate;}
+	public void setDoseTime(String newDoseTime) { this.DoseTime = newDoseTime;}
 	public void setDoseType(DoseType newDoseType) { this.doseType = newDoseType;}
 	public void setCarbCount(int newCarbCount) { this.CarbCount = newCarbCount;}
 	public void setActualDose (double newActualDose) { this.ActualDose = newActualDose;}

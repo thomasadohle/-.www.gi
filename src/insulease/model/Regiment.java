@@ -6,7 +6,7 @@ import java.sql.Date;
 public class Regiment {
 	private int RegimentID;
 	private Patients pt;
-	private Date RegimentDate;
+	private String RegimentDate;
 	private double A1C;
 	private int DaytimeTarget;
 	private int NighttimeTarget;
@@ -23,7 +23,7 @@ public class Regiment {
 	/*
 	 * Constructor using auto-generated RegimentID
 	 */
-	public Regiment(int RegimentID, Patients pt, Date RegimentDate, double A1C, int DaytimeTarget, int NighttimeTarget, int DaytimeCorrection,
+	public Regiment(int RegimentID, Patients pt, String RegimentDate, double A1C, int DaytimeTarget, int NighttimeTarget, int DaytimeCorrection,
 			int NighttimeCorrection, double BreakfastRatio, double LunchRatio, double DinnerRatio, double BedTimeRatio, BasalInsulin basal, BolusInsulin bolus, Drs dr) {
 		this.RegimentID=RegimentID;
 		this.pt=pt;
@@ -45,7 +45,7 @@ public class Regiment {
 	/*
 	 * Constructor not using auto-generated RegimentID
 	 */
-	public Regiment(Patients pt, Date RegimentDate, double A1C, int DaytimeTarget, int NighttimeTarget, int DaytimeCorrection,
+	public Regiment(Patients pt, String RegimentDate, double A1C, int DaytimeTarget, int NighttimeTarget, int DaytimeCorrection,
 			int NighttimeCorrection, double BreakfastRatio, double LunchRatio, double DinnerRatio, double BedTimeRatio, BasalInsulin basal, 
 			BolusInsulin bolus, Drs dr) {
 		this.pt=pt;
@@ -67,7 +67,7 @@ public class Regiment {
 	//Getters
 	public int getRegimentID() {return this.RegimentID;}
 	public Patients getPt() {return this.pt;}
-	public Date getRegimentDate() {return this.RegimentDate;}
+	public String getRegimentDate() {return this.RegimentDate;}
 	public double getA1C() {return this.A1C;}
 	public int getDayTimeTarget() {return this.DaytimeTarget;}
 	public int getNighttimeTarget() {return this.NighttimeTarget;}
@@ -84,7 +84,7 @@ public class Regiment {
 	//Setters
 	public void setRegimentID (int regimentID) {this.RegimentID=regimentID;}
 	public void setPt(Patients newPt) {this.pt = newPt;}
-	public void setRegimentDate(Date newRegimentDate) {this.RegimentDate = newRegimentDate;}
+	public void setRegimentDate(String newRegimentDate) {this.RegimentDate = newRegimentDate;}
 	public void setA1C(double newA1C) {this.A1C = newA1C;}
 	public void setDayTimeTarget(int newDayTimeTarget) {this.DaytimeTarget = newDayTimeTarget;}
 	public void setNighttimeTarget(int newNighttimeTarget) {this.NighttimeTarget = newNighttimeTarget;}

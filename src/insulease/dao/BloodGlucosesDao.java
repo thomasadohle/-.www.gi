@@ -38,8 +38,8 @@ protected ConnectionManager connectionManager;
 			try {
 				connection = connectionManager.getConnection();
 				insertStmt = connection.prepareStatement(insertBloodGlucoses);
-				insertStmt.setDate(1, bloodGlucose.getBgDate());
-				insertStmt.setTime(2, bloodGlucose.getBgTime());
+				insertStmt.setString(1, bloodGlucose.getBgDate());
+				insertStmt.setString(2, bloodGlucose.getBgTime());
 				insertStmt.setString(3, bloodGlucose.getPt().getPtID());
 				insertStmt.setInt(4, bloodGlucose.getBloodGlucose());
 				insertStmt.executeUpdate();
@@ -111,8 +111,8 @@ protected ConnectionManager connectionManager;
 				if(results.next()) {
 					int rBgID = results.getInt("BgID");
 					String rPtID = results.getString("PtID");
-					Date rDate = results.getDate("BgDate");
-					Time rTime = results.getTime("BgTime");
+					String rDate = results.getString("BgDate");
+					String rTime = results.getString("BgTime");
 					int rBg = results.getInt("BloodGlucose");
 					Patients pt = patientsDao.getPatientFromPtID(rPtID);
 					BloodGlucoses bg = new BloodGlucoses(rBgID, rDate, rTime, pt, rBg);
