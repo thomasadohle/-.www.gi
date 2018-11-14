@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import insulease.model.BolusInsulin;
 import insulease.model.BolusInsulin.BolusType;
@@ -37,7 +38,7 @@ protected ConnectionManager connectionManager;
 			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertBolusInsulin);
+				insertStmt = connection.prepareStatement(insertBolusInsulin, Statement.RETURN_GENERATED_KEYS);
 				insertStmt.setString(1, bolusInsulin.getBrand());
 				insertStmt.setString(2, bolusInsulin.BolusTypeToString());
 				insertStmt.executeUpdate();

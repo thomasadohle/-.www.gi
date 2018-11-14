@@ -23,7 +23,7 @@ public class BgComments {
 	/*
 	 * Constructor not using auto-generated BgCommentId
 	 */
-	public BgComments (String PtID, String CommentText, BloodGlucoses bg) {
+	public BgComments (String CommentText, BloodGlucoses bg) {
 		this.CommentText=CommentText;
 		this.Bg=bg;
 	}

@@ -28,6 +28,7 @@
 	<br/>
 	
 	<h1>Patient Information</h1>
+	<h5>Click <a href="GetRegiment?patientId=<c:out value="${patient.getPtID()}"/>">here</a> to view treatment regiment</h5>
         <table border="1">
             <tr>
                 <th>PatientID</th>
@@ -36,7 +37,9 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Gender</th>
-                <th>Doctor</th>
+                <th>DOB</th>
+                <th>Past Bg Values</th>
+                <th>Add a Blood glucose</th>
             </tr>
             <tr> 
                 <td><c:out value='${patient.getPtID()}'/></td>
@@ -45,13 +48,17 @@
                 <td><c:out value='${patient.getPtContactInfo().getLastName()}'/></td>
                 <td><c:out value='${patient.getPtContactInfo().getEmail()}'/></td>
                 <td><c:out value='${patient.getPtContactInfo().getGender()}'/></td>
-                <td><c:out value='${patient.getRegiment()}'/></td> 
+                <td><c:out value='${patient.getPtContactInfo().getDOB()}'/></td>
+                <td><a href="ViewBgs?patientId=<c:out value="${patient.getPtID()}"/>">View Past Bgs</a></td>
+                <td><a href="AddBg?patientId=<c:out value="${patient.getPtID()}"/>">Add New Bg</a></td>
            </tr> 
               
-            
        </table>
+       
+       
+       	<p>Click <a href="Home.html">here</a> to return to homepage.</p>
+       
    
-  <!-- Need to link to add BG page --> <p><a href="AddBg?">click  here</a> </p>
    
        
 </body>

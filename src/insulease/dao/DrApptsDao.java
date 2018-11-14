@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 
 import insulease.model.BolusInsulin;
@@ -39,7 +40,7 @@ protected ConnectionManager connectionManager;
 			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertDrAppts);
+				insertStmt = connection.prepareStatement(insertDrAppts, Statement.RETURN_GENERATED_KEYS);
 				insertStmt.setString(1, drAppt.getApptDate());
 				insertStmt.setString(2, drAppt.getApptTime());
 				insertStmt.setString(3, drAppt.getPt().getPtID());

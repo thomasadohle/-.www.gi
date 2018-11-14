@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import insulease.model.BasalInsulin;
 import insulease.model.BgComments;
@@ -31,13 +32,13 @@ protected ConnectionManager connectionManager;
 		 *INSERT INTO DoseComments 
 		 */
 		public DoseComments create(DoseComments doseComment) throws SQLException {
-			String insertDoseComments = "INSERT INTO DoseComments(CommentText, DoseID) VALUES(?,?);";
+			String insertDoseComments = "INSERT INTO DoseComments(DoseComment, DoseID) VALUES(?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
 			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertDoseComments);
+				insertStmt = connection.prepareStatement(insertDoseComments, Statement.RETURN_GENERATED_KEYS);
 				insertStmt.setString(1, doseComment.getDoseComment());
 				insertStmt.setInt(2, doseComment.getDose().getDoseID());
 				insertStmt.executeUpdate();

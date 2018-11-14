@@ -33,6 +33,11 @@ public class BloodGlucoses {
 		this.BloodGlucose=BloodGlucose;
 	}
 	
+	//Constructor taking only a BgID
+	public BloodGlucoses (int BgID) {
+		this.BgID=BgID;
+	}
+	
 	//Getters
 	public int getBgID() {return this.BgID;}
 	public String getBgDate() {return this.BgDate;}

@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 
 import insulease.model.BasalInsulin;
@@ -33,13 +34,13 @@ protected ConnectionManager connectionManager;
 		 *INSERT INTO BasalInsulin
 		 */
 		public BasalInsulin create(BasalInsulin basalInsulin) throws SQLException {
-			String insertBasalInsulin = "INSERT INTO BasalInsulin(Brand, Frequency, PtID) VALUES(?,?,?);";
+			String insertBasalInsulin = "INSERT INTO BasalInsulin(Brand, Frequency) VALUES(?,?);";
 			Connection connection = null;
 			PreparedStatement insertStmt = null;
 			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertBasalInsulin);
+				insertStmt = connection.prepareStatement(insertBasalInsulin, Statement.RETURN_GENERATED_KEYS);
 				insertStmt.setString(1, basalInsulin.getBrand());
 				insertStmt.setInt(2, basalInsulin.getFrequency());
 				insertStmt.executeUpdate();

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import insulease.model.BasalInsulin;
 import insulease.model.BgComments;
@@ -37,7 +38,7 @@ protected ConnectionManager connectionManager;
 			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertBgComments);
+				insertStmt = connection.prepareStatement(insertBgComments, Statement.RETURN_GENERATED_KEYS);
 				insertStmt.setString(1, bgComment.getCommentText());
 				insertStmt.setInt(2, bgComment.getBg().getBgID());
 				insertStmt.executeUpdate();

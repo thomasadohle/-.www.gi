@@ -42,7 +42,7 @@ public class ContactInfoDao {
 				insertStmt = connection.prepareStatement(insertContactInfo, Statement.RETURN_GENERATED_KEYS);
 				insertStmt.setString(1, contactInfo.getFirstName());
 				insertStmt.setString(2, contactInfo.getLastName());
-				insertStmt.setDate(3, contactInfo.getDOB());
+				insertStmt.setString(3, contactInfo.getDOB());
 				insertStmt.setString(4, contactInfo.getStreet1());
 				insertStmt.setString(5, contactInfo.getStreet2());
 				insertStmt.setString(6, contactInfo.getCity());
@@ -119,7 +119,7 @@ public class ContactInfoDao {
 					int rContactInfoID = results.getInt("ContactInfoID");
 					String rFirstName = results.getString("FirstName");
 					String rLastName = results.getString("LastName");
-					Date rDOB = results.getDate("DOB");
+					String rDOB = results.getString("DOB");
 					String rStreet1 = results.getString("Street1");
 					String rStreet2 = results.getString("Street2");
 					String rCity = results.getString("City");

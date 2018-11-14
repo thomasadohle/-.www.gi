@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import insulease.model.BasalInsulin;
 import insulease.model.BolusInsulin;
@@ -41,7 +42,7 @@ protected ConnectionManager connectionManager;
 			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertRegiment);
+				insertStmt = connection.prepareStatement(insertRegiment, Statement.RETURN_GENERATED_KEYS);
 				insertStmt.setString(1, regiment.getPt().getPtID());
 				insertStmt.setString(2, regiment.getRegimentDate());
 				insertStmt.setDouble(3, regiment.getA1C());
@@ -194,7 +195,7 @@ protected ConnectionManager connectionManager;
 					int rNighttimeTarget = results.getInt("NighttimeTarget");
 					int rDaytimeCorrection = results.getInt("DaytimeCorrection");
 					int rNighttimeCorrection = results.getInt("NighttimeCorrection");
-					double rBreakfastRatio = results.getDouble("BreakfastRatio:");
+					double rBreakfastRatio = results.getDouble("BreakfastRatio");
 					double rLunchRatio = results.getDouble("LunchRatio");
 					double rDinnerRatio = results.getDouble("DinnerRatio");
 					double rBedtimeRatio = results.getDouble("BedtimeRatio");

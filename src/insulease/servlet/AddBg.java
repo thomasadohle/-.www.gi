@@ -35,6 +35,7 @@ protected BloodGlucosesDao  bloodGlucosesDao;
 		// Map for storing messages.
         Map<String, String> messages = new HashMap<String, String>();
         req.setAttribute("messages", messages);
+        messages.put("success","Please enter a valid Patient ID");
         req.getRequestDispatcher("/NewBg.jsp").forward(req, resp);
 	}
 	

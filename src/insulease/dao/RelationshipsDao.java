@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import insulease.model.Patients;
 import insulease.model.Relationships;
@@ -37,7 +38,7 @@ public class RelationshipsDao {
 			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertRelationship);
+				insertStmt = connection.prepareStatement(insertRelationship, Statement.RETURN_GENERATED_KEYS);
 				insertStmt.setString(1, relationship.getRelUser().getUserName());
 				insertStmt.setString(2, relationship.getRelPt().getPtID());
 				insertStmt.setString(3, relationship.relToString());

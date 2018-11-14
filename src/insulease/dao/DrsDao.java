@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import insulease.model.ContactInfo;
 import insulease.model.Drs;
@@ -36,7 +37,7 @@ protected ConnectionManager connectionManager;
 			ResultSet resultKey = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertDr);
+				insertStmt = connection.prepareStatement(insertDr, Statement.RETURN_GENERATED_KEYS);
 				insertStmt.setInt(1, dr.getContactInfo().getContactInfoID());
 				insertStmt.setString(2, dr.getAffiliatedInstitutionD());
 				insertStmt.executeUpdate();

@@ -5,7 +5,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import insulease.model.BgComments;
 import insulease.model.BloodGlucoses;
@@ -37,7 +41,7 @@ protected ConnectionManager connectionManager;
 			PreparedStatement insertStmt = null;
 			try {
 				connection = connectionManager.getConnection();
-				insertStmt = connection.prepareStatement(insertBloodGlucoses);
+				insertStmt = connection.prepareStatement(insertBloodGlucoses, Statement.RETURN_GENERATED_KEYS);
 				insertStmt.setString(1, bloodGlucose.getBgDate());
 				insertStmt.setString(2, bloodGlucose.getBgTime());
 				insertStmt.setString(3, bloodGlucose.getPt().getPtID());
@@ -133,5 +137,80 @@ protected ConnectionManager connectionManager;
 				}
 			}
 			return null;
+		}
+		
+		/**
+		 * SELECT FROM BloodGlucoses WHERE PtID= LIMIT 10
+		 */
+		public List<BloodGlucoses> getBgFromPtID(String PtID) throws SQLException {
+			String selectBgValues = "SELECT * FROM BloodGlucoses WHERE PtID=? LIMIT 10;";
+			List<BloodGlucoses> BgList = new ArrayList<BloodGlucoses>();
+			Connection connection = null;
+			PreparedStatement selectStmt = null;
+			ResultSet results = null;
+			try {
+				connection = connectionManager.getConnection();
+				selectStmt = connection.prepareStatement(selectBgValues);
+				selectStmt.setString(1, PtID);
+				results = selectStmt.executeQuery();
+				PatientsDao patientsDao = PatientsDao.getInstance();
+				while(results.next()) {
+					int rBgID = results.getInt("BgID");
+					String rPtID = results.getString("PtID");
+					String rDate = results.getString("BgDate");
+					String rTime = results.getString("BgTime");
+					int rBg = results.getInt("BloodGlucose");
+					Patients pt = patientsDao.getPatientFromPtID(rPtID);
+					BloodGlucoses bg = new BloodGlucoses(rBgID, rDate, rTime, pt, rBg);
+					BgList.add(bg);
+			
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			} finally {
+				if(connection != null) {
+					connection.close();
+				}
+				if(selectStmt != null) {
+					selectStmt.close();
+				}
+				if(results != null) {
+					results.close();
+				}
+			}
+			return BgList;
+		}
+		
+		/**
+		 * Update the BloodGlucose of the BloodGlucoses.
+		 * 
+		 */
+		public BloodGlucoses updateBg(BloodGlucoses bg, int newBgVal) throws SQLException {
+			String updateBlogComment = "UPDATE BloodGlucoses SET BloodGlucose=? WHERE BgID=?;";
+			Connection connection = null;
+			PreparedStatement updateStmt = null;
+			try {
+				connection = connectionManager.getConnection();
+				updateStmt = connection.prepareStatement(updateBlogComment);
+				updateStmt.setInt(1, newBgVal);
+				updateStmt.setInt(2, bg.getBgID());
+				updateStmt.executeUpdate();
+
+				// Update the blogComment param before returning to the caller.
+				bg.setBloodGlucose(newBgVal);
+				
+				return bg;
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			} finally {
+				if(connection != null) {
+					connection.close();
+				}
+				if(updateStmt != null) {
+					updateStmt.close();
+				}
+			}
 		}
 }

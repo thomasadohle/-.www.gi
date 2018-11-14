@@ -1,13 +1,12 @@
 package insulease.model;
 
-import java.sql.Date;
 
  
 public class ContactInfo {
 	private int ContactInfoId;
 	private String FirstName;
 	private String LastName;
-	private Date DOB;
+	private String DOB;
 	private String Street1;
 	private String Street2;
 	private String City;
@@ -21,7 +20,7 @@ public class ContactInfo {
 	 * Constructor that doesn't use auto-generated ContactInfoID
 	 * NEED TO UPDATE ContactImage data type to be compatible with BLOB
 	 */
-	public ContactInfo (String FirstName, String LastName, Date DOB, String Street1, String Street2, 
+	public ContactInfo (String FirstName, String LastName, String DOB, String Street1, String Street2, 
 			String City, String State, int ZipCode, String Email, String Gender, String ContactImage) {
 		this.FirstName=FirstName;
 		this.LastName=LastName;
@@ -40,7 +39,7 @@ public class ContactInfo {
 	 * Constructor that doesn't use auto-generated ContactInfoID
 	 * NEED TO UPDATE ContactImage data type to be compatible with BLOB
 	 */
-	public ContactInfo (int ContactInfoId, String FirstName, String LastName, Date DOB, String Street1, String Street2, 
+	public ContactInfo (int ContactInfoId, String FirstName, String LastName, String DOB, String Street1, String Street2, 
 			String City, String State, int ZipCode, String Email, String Gender, String ContactImage) {
 		this.ContactInfoId=ContactInfoId;
 		this.FirstName=FirstName;
@@ -60,7 +59,7 @@ public class ContactInfo {
 	public int getContactInfoID() {return this.ContactInfoId;}
 	public String getFirstName() {return this.FirstName;}
 	public String getLastName() {return this.LastName;}
-	public Date getDOB() {return this.DOB;}
+	public String getDOB() {return this.DOB;}
 	public String getStreet1() {return this.Street1;}
 	public String getStreet2() {return this.Street2;}
 	public String getCity() {return this.City;} 
